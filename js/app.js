@@ -75,7 +75,7 @@ const displayAllNews = newsObj => {
 
   allNews.forEach(news => { 
 
-    console.log(news);
+    // console.log(news);
     
   const {title, total_view, thumbnail_url, details, _id} = news; //? destructuring news object
   const { name, published_date, img } = news.author; //? destructuring news author object
@@ -130,7 +130,7 @@ const displayAllNews = newsObj => {
                   
                 </div>
                 <div class="col-md-3 col-6">
-                  <button onclick="loadNewsDetails('${_id}')" class="btn btn-outline-primary"><svg style="height: 24px; width: 24px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <button onclick="loadNewsDetails('${_id}')" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newsDetailsModal"><svg style="height: 24px; width: 24px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                   </svg>
                   </button>
@@ -162,5 +162,33 @@ const spinner = isLoading => {
 }
 
 
+//TODO: Display news detail in a modal
+const loadNewsDetails = async (news_id) => {
+
+  const url = `https://openapi.programming-hero.com/api/news/${news_id}`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    displayNewsDetails(data.data[0]);
+    // console.log(data.data);
+  }
+  catch ( error ) {
+    console.log(error);
+  }
+
+}
+
+const displayNewsDetails = details => {
+  console.log(details);
+
+  const {name, published_date, img} = details.author;
+
+  const modalBody = document.getElementById('news-details');
+  modalBody.innerHTML = `
+    <img class="img-fluid rounded-3" src="${img}" alt="">
+    <h3 class="fs-3 mt-3">${name ? name : "N/A"}</h3>
+    <p class="">Post Publish Date: ${published_date ? published_date : "N/A"}</p>
+  `;
+}
 
 loadData();
