@@ -37,17 +37,20 @@ const loadAllNews = (category_id) => {
 const displayAllNews = newsObj => {
 
   const allNews = newsObj.data;
+  // console.log(allNews);
   console.log(allNews.length);
+  console.log(allNews.category_id);
   //TODO: Display How Many News are found
 
+  const newsRow = document.getElementById( 'news-row' );
+  newsRow.innerHTML = '';
+  
   allNews.forEach(news => { 
-    console.log(news);
+    console.log(news.category_id);
     //* News Obj Distructureing
   const {title, total_view, thumbnail_url, details} = news;
   const { name, published_date, img } = news.author;
-  console.log(title, total_view)
-  const newsRow = document.getElementById( 'news-row' );
-  // newsRow.innerHTML = '';
+  
   const newsCol = document.createElement( 'div' );
   
   newsCol.classList.add( 'col' );
@@ -59,16 +62,16 @@ const displayAllNews = newsObj => {
         </div>
         <div class="col-md-8">
           <div class="card-body">
-            <h5 class="card-title">${news.title ? news.title : 'N/A'}</h5>
-            <p class="card-text">${details}</p>
+            <h5 class="card-title">${ title ? title : 'N/A' }</h5>
+            <p class="card-text">${details.slice(0, 500)}${' ...'}</p>
             <div class="container mt-5">
               <div class="row d-flex align-items-center justify-content-center">
                 <div class="col-md-3 col-6">
                   <div class="author d-flex align-items-center">
                     <img class="img-fluid w-25 rounded" src="${img}" alt="">
                     <div class="author-info">
-                      <h6>${name}</h6>
-                      <p>${published_date}</p>
+                      <h6>${name ? name : "N/A"}</h6>
+                      <p>${published_date ? published_date : "N/A"}</p>
                     </div>
                   </div>
                 </div>
