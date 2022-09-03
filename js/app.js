@@ -37,8 +37,13 @@ const loadAllNews = (category_id) => {
 //TODO: Display all News
 const displayAllNews = newsObj => {
 
-  const allNews = newsObj.data;
-  
+  const allNews = newsObj.data; // Array of Object
+
+  //TODO: Display Most Viewed News First
+  allNews.sort( (value1, value2) => {
+    return value2.total_view - value1.total_view; 
+  })
+
   //TODO: Display How Many News are found
   const categoryCol = document.getElementById( 'number-of-category' );
   categoryCol.innerHTML = '';
@@ -61,16 +66,16 @@ const displayAllNews = newsObj => {
 
     }
   
+  
 
   //TODO: Display News By Category
   const newsRow = document.getElementById( 'news-row' );
   newsRow.innerHTML = '';
 
   allNews.forEach(news => { 
-    // console.log(news.category_id);
-    //* News Obj Distructureing
-  const {title, total_view, thumbnail_url, details} = news;
-  const { name, published_date, img } = news.author;
+    
+  const {title, total_view, thumbnail_url, details} = news; // object destructuring
+  const { name, published_date, img } = news.author; // object destructuring
   
   const newsCol = document.createElement( 'div' );
   
@@ -89,7 +94,7 @@ const displayAllNews = newsObj => {
               <div class="row d-flex align-items-center justify-content-center">
                 <div class="col-md-3 col-6">
                   <div class="author d-flex align-items-center">
-                    <img class="img-fluid w-25 rounded" src="${img}" alt="">
+                    <img class="img-fluid w-25 rounded-circle" src="${img}" alt="">
                     <div class="author-info">
                       <h6>${name ? name : "N/A"}</h6>
                       <p>${published_date ? published_date : "N/A"}</p>
@@ -135,6 +140,7 @@ const displayAllNews = newsObj => {
     </div>
       `;
   newsRow.appendChild(newsCol);
+
    })
 
 }
