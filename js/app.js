@@ -8,6 +8,8 @@ const loadData = () => {
 
 //TODO: Display the loaded category name to the category section
 const displayCategories = categories => {
+
+  // console.log(categories);
   
   const btnContainer = document.getElementById( 'btn-container' )
   categories.forEach(category => {
@@ -74,8 +76,7 @@ const displayAllNews = newsObj => {
   newsRow.innerHTML = '';
 
   allNews.forEach(news => { 
-
-    // console.log(news);
+    
     
   const {title, total_view, thumbnail_url, details, _id} = news; //? destructuring news object
   const { name, published_date, img } = news.author; //? destructuring news author object
@@ -162,7 +163,7 @@ const spinner = isLoading => {
 }
 
 
-//TODO: Display news detail in a modal
+//TODO: Load news id for modal
 const loadNewsDetails = async (news_id) => {
 
   const url = `https://openapi.programming-hero.com/api/news/${news_id}`;
@@ -178,10 +179,10 @@ const loadNewsDetails = async (news_id) => {
 
 }
 
-const displayNewsDetails = details => {
-  console.log(details);
+//TODO: Display details in a modal
+const displayNewsDetails = news => {
 
-  const {name, published_date, img} = details.author;
+  const {name, published_date, img} = news.author;
 
   const modalBody = document.getElementById('news-details');
   modalBody.innerHTML = `
