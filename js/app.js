@@ -6,14 +6,12 @@ const loadData = () => {
     
 }
 
-//TODO: Display the loaded category to the category section
+//TODO: Display the loaded category name to the category section
 const displayCategories = categories => {
-  
-  // console.log(categories);
   
   const btnContainer = document.getElementById( 'btn-container' )
   categories.forEach(category => {
-    const {category_name, category_id} = category;
+    const {category_name, category_id} = category; //? destructuring category data
     
     const btnDiv = document.createElement('div');
     btnDiv.classList.add( 'col' );
@@ -37,12 +35,8 @@ const loadAllNews = (category_id) => {
 //TODO: Display all News
 const displayAllNews = newsObj => {
 
-  const allNews = newsObj.data; // Array of Object
-
-  //TODO: Display Most Viewed News First
-  allNews.sort( (value1, value2) => {
-    return value2.total_view - value1.total_view; 
-  })
+  const allNews = newsObj.data; //? Array of Object
+  spinner(true); //? Loading animation when loading all news
 
   //TODO: Display How Many News are found
   const categoryCol = document.getElementById( 'number-of-category' );
@@ -55,6 +49,8 @@ const displayAllNews = newsObj => {
     messageDiv.innerText = `No News Found!`;
     categoryCol.appendChild(messageDiv);
 
+    spinner(false); //? Stop loading animation when no news found!
+
    }
    else { 
 
@@ -66,6 +62,11 @@ const displayAllNews = newsObj => {
 
     }
   
+
+  //TODO: Display Most Viewed News First
+  allNews.sort( (value1, value2) => {
+    return value2.total_view - value1.total_view; 
+  })
   
 
   //TODO: Display News By Category
@@ -73,9 +74,11 @@ const displayAllNews = newsObj => {
   newsRow.innerHTML = '';
 
   allNews.forEach(news => { 
+
+    console.log(news);
     
-  const {title, total_view, thumbnail_url, details} = news; // object destructuring
-  const { name, published_date, img } = news.author; // object destructuring
+  const {title, total_view, thumbnail_url, details, _id} = news; //? destructuring news object
+  const { name, published_date, img } = news.author; //? destructuring news author object
   
   const newsCol = document.createElement( 'div' );
   
@@ -88,7 +91,7 @@ const displayAllNews = newsObj => {
         </div>
         <div class="col-md-8">
           <div class="card-body">
-            <h5 class="card-title">${ title ? title : 'N/A' }</h5>
+            <h5 class="card-title fw-bold">${ title ? title : 'N/A' }</h5>
             <p class="card-text">${details.slice(0, 500)}${' ...'}</p>
             <div class="container mt-5">
               <div class="row d-flex align-items-center justify-content-center">
@@ -127,7 +130,7 @@ const displayAllNews = newsObj => {
                   
                 </div>
                 <div class="col-md-3 col-6">
-                  <button class="btn btn-outline-primary"><svg style="height: 24px; width: 24px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <button onclick="loadNewsDetails('${_id}')" class="btn btn-outline-primary"><svg style="height: 24px; width: 24px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                   </svg>
                   </button>
@@ -141,11 +144,22 @@ const displayAllNews = newsObj => {
       `;
   newsRow.appendChild(newsCol);
 
+  spinner(false); //? Stop loading animation when all news loaded!
+
    })
 
 }
 
-
+//TODO: Display a spinner while data is loading
+const spinner = isLoading => {
+  const spinnerSection = document.getElementById('spinner');
+  if (isLoading){
+    spinnerSection.classList.remove('d-none');
+  }
+  else {
+    spinnerSection.classList.add('d-none');
+  }
+}
 
 
 
