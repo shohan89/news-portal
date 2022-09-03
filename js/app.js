@@ -26,27 +26,48 @@ const displayCategories = categories => {
 
 //TODO: Load All News Using Category ID
 const loadAllNews = (category_id) => {
+
   const url = `https://openapi.programming-hero.com/api/news/category/${category_id}`;
-  console.log( url );
   fetch(url)
     .then(res => res.json())
     .then(data => displayAllNews(data));
+
 }
 
 //TODO: Display all News
 const displayAllNews = newsObj => {
 
   const allNews = newsObj.data;
-  // console.log(allNews);
-  console.log(allNews.length);
-  console.log(allNews.category_id);
+  
   //TODO: Display How Many News are found
+  const categoryCol = document.getElementById( 'number-of-category' );
+  categoryCol.innerHTML = '';
+  if ( allNews.length === 0 ) { 
 
+    const messageDiv = document.createElement( 'div' );
+    messageDiv.classList.add( 'alert' );
+    messageDiv.classList.add( 'alert-danger' );
+    messageDiv.innerText = `No News Found!`;
+    categoryCol.appendChild(messageDiv);
+
+   }
+   else { 
+
+    const messageDiv = document.createElement( 'div' );
+    messageDiv.classList.add( 'alert' );
+    messageDiv.classList.add( 'alert-success' );
+    messageDiv.innerText = `${allNews.length} News Found!`;
+    categoryCol.appendChild(messageDiv);
+
+    }
+  
+
+  //TODO: Display News By Category
   const newsRow = document.getElementById( 'news-row' );
   newsRow.innerHTML = '';
-  
+
   allNews.forEach(news => { 
-    console.log(news.category_id);
+    // console.log(news.category_id);
     //* News Obj Distructureing
   const {title, total_view, thumbnail_url, details} = news;
   const { name, published_date, img } = news.author;
